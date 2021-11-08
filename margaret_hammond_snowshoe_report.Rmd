@@ -118,6 +118,8 @@ ggplot(data = weight_stats,
 Then, in 2 - 3 sentences below your visualization(s) describe in text the main takeaways that you would want the audience to understand from your figures. ***DELETE THIS***
 
 ### Juvenile Weight Comparison
+
+#### Table Comparison of Male and Female weight
 Compare mean weights for juvenile male and female snowshow hares. 
 
 ```{r}
@@ -148,9 +150,40 @@ weight_compare %>%
 ##  I STILL NEED TO DO T TEST AND COHENS D
 ```
 
-### Data Analysis
+#### Data Analysis
 A 2 - 3 sentence comprehensive statement of the means comparison, including at least:
 The actual difference in means
 Effect size (Cohen's *d*) (see effsize::cohen.d() example in the Lab 5 key)
 Outcome of an unpaired two-sample t-test
 ***DELETE THIS***
+
+
+### Juvenile Weight & Hind Foot Length
+
+#### Wrangle Data
+Wrangle the data to include weight, hind foot length, and juvenile hares.
+
+```{r}
+
+```
+
+#### Data Visualization
+Data visualization of the relationship between wright and hind foot length in juvenile hares.
+```{r}
+
+```
+
+#### Linear Regression
+Linear regression line to visualize how juvenile showshoe hare weight changes with respect to hind foot length.
+
+```{r}
+
+```
+
+#### Data Interpretation
+In 2 - 3 sentences below your figure, describe the outcome of your linear regression exploration (e.g. slope interpretation, R2 value, and Pearson's r correlation) and touch briefly on which assumption(s) of linear regression may be a concern, and additional thoughts you have about how well (or not well…) the linear model describes the relationship. What worries you? ***DELETE THIS***
+
+### Summary
+Include a very short summary describing your main findings from your juvenile hares exploration (bullet points are fine) ***DELETE THIS***
+
+## End of Assignment 4
