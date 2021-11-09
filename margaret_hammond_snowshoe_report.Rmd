@@ -15,6 +15,7 @@ library(broom)
 library(equatiomatic)
 library(lubridate)
 library(kableExtra)
+library(effsize)
 ```
 
 ## Data Introduction
@@ -42,12 +43,12 @@ snowshoe <- read_csv(here("data", "bonanza_hares.csv"))
 #### Wrangle the Data
 
 ```{r}
-juvenile_snowshoe_date <- snowshoe %>% 
+juvenile_snowshoe <- snowshoe %>% 
   filter(age == "j") %>% 
   mutate(date = mdy(date)) %>% 
   mutate(year = year(date))
 
-juvenile_snowshoe_count <- juvenile_snowshoe_date %>% 
+juvenile_snowshoe_count <- juvenile_snowshoe %>% 
   count(year)
 ```
 
@@ -56,7 +57,8 @@ juvenile_snowshoe_count <- juvenile_snowshoe_date %>%
 ```{r}
 ggplot(data = juvenile_snowshoe_count, aes(x = year, y = n)) +
   geom_bar(stat = "identity",
-           fill = "pink2") +
+           fill = "pink2", 
+           color = "black") +
   labs(x = "Year",
        y = "Amount of Snowshoe Hares",
        title = "Juvenille Snowshoe Hare Count by Year",
@@ -79,7 +81,7 @@ Finalized data visualization comparing juvenile hare weights by sex and site.
 
 ```{r}
 
-weight_stats <- juvenile_snowshoe_date %>% 
+weight_stats <- juvenile_snowshoe %>% 
   mutate(sex = case_when(
     sex == "f" ~ "F",
     sex == "m" ~ "M"
@@ -89,21 +91,23 @@ weight_stats <- juvenile_snowshoe_date %>%
     grid == "bonmat" ~ "Bonanza Mature",
     grid == "bonbs" ~ "Bonanza Black Spruce"
   )) %>% 
+  filter(sex != "NA") 
+
+weight_stats_sum <- weight_stats %>% 
   group_by(sex, grid) %>% 
-  summarize(
+  summarize( # Creating a summary table of weight by sex for the seperate sites
     mean_weight = mean(weight, na.rm = TRUE),
-    median_weight = median(weight, na.rm = TRUE),
-    sd_weight = sd(weight, na.rm = TRUE),
+    median_weight = median(weight, na.rm = TRUE), # Median, sd, and n included for personal data observations
+    sd_weight = sd(weight, na.rm = TRUE), 
     sample_size = n()
   )
-#juvenile_weight <- juvenile_snowshoe_date %>% 
- #mutate(observation = nrow(juvenile_snowshoe_date))
 
-ggplot(data = weight_stats, 
+
+ggplot(data = weight_stats_sum, 
        aes(x = sex, y = mean_weight, fill = sex)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ grid, scale = "free") +
-  scale_fill_manual(values = c("pink3", "blue", "grey")) +
+  scale_fill_manual(values = c("pink3", "blue", "grey")) + #pink for female, blue for male
  # theme()
   labs (x = "Sex",
         y = "Weight (gram)",
@@ -119,18 +123,38 @@ Then, in 2 - 3 sentences below your visualization(s) describe in text the main t
 
 ### Juvenile Weight Comparison
 
-#### Table Comparison of Male and Female weight
-Compare mean weights for juvenile male and female snowshow hares. 
+#### Exploratory Data Visualization
+Exploratory data visualization of the relationship between male and female juvenile hare weight. Done so with a QQ plot and histogram to explore assumptions of your t-test.
 
 ```{r}
-
-weight_compare <- juvenile_snowshoe_date %>% 
+weight_compare_explore <- juvenile_snowshoe %>% 
+  filter(sex != "NA") %>% 
   group_by(sex) %>% 
    mutate(sex = case_when(
     sex == "f" ~ "Female",
-    sex == "m" ~ "Male",
-    sex == "NA" ~ "No Data"
-  )) %>% 
+    sex == "m" ~ "Male"))
+
+ggplot(data = weight_compare_explore, aes(x = weight)) +
+  geom_histogram(bins = 15) +
+  facet_wrap(~sex)
+
+ggplot(data = weight_compare_explore, aes(sample = weight)) +
+  geom_qq() +
+  facet_wrap(~sex)
+```
+
+
+#### Table Comparison of Male and Female weight
+Compare mean weights for juvenile male and female snowshoe hares. 
+
+```{r}
+
+weight_compare <- juvenile_snowshoe %>% 
+  filter(sex != "NA") %>% 
+  group_by(sex) %>% 
+   mutate(sex = case_when(
+    sex == "f" ~ "Female",
+    sex == "m" ~ "Male")) %>% 
   summarize(
     mean_weight = 
       round(mean(weight, na.rm = TRUE), 2),
@@ -150,6 +174,27 @@ weight_compare %>%
 ##  I STILL NEED TO DO T TEST AND COHENS D
 ```
 
+#### T-Test and Cohen's d
+Create code to run a t-test and cohen's d.
+
+```{r}
+female_juvenile <- juvenile_snowshoe %>% 
+  filter(sex == "f") %>% 
+  drop_na(weight) %>% 
+  pull(weight)
+
+male_juvenile <- juvenile_snowshoe %>% 
+  filter(sex == "m") %>% 
+  drop_na(weight) %>% 
+  pull(weight)
+
+
+t.test(x = female_juvenile, y = male_juvenile)
+
+cohen.d(female_juvenile, male_juvenile)
+```
+
+
 #### Data Analysis
 A 2 - 3 sentence comprehensive statement of the means comparison, including at least:
 The actual difference in means
@@ -161,10 +206,11 @@ Outcome of an unpaired two-sample t-test
 ### Juvenile Weight & Hind Foot Length
 
 #### Wrangle Data
-Wrangle the data to include weight, hind foot length, and juvenile hares.
+Wrangle the data to include weight, hind foot length for juvenile hares.
 
 ```{r}
-
+weight_feet <- juvenile_snowshoe %>% 
+  select(weight, hindft)
 ```
 
 #### Data Visualization
