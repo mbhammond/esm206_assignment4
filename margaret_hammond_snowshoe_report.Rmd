@@ -41,6 +41,7 @@ snowshoe <- read_csv(here("data", "bonanza_hares.csv"))
 ```
 
 #### Wrangle the Data
+Wrangle the data to only have juvenile weight and create a year column. 
 
 ```{r}
 juvenile_snowshoe <- snowshoe %>% 
@@ -53,6 +54,7 @@ juvenile_snowshoe_count <- juvenile_snowshoe %>%
 ```
 
 #### Data Visualization
+Data visualization of juvenile snowshoe hare count by year. 
 
 ```{r}
 ggplot(data = juvenile_snowshoe_count, aes(x = year, y = n)) +
@@ -74,10 +76,10 @@ General/notable trends?
 - These are absolute counts, but this count is also impacted by effort (e.g. the number of days and number of traps in the study each year). What would you suggest be done moving forward (you are not expected to actually do this) to standardize the juvenile hare population in future analyses?
 **DELETE THIS**
 
-### Visualize Hare Lengths
-Finalized data visualization comparing juvenile hare weights by sex and site. 
+### Juvenile Hare Weight by Sex and Site
 
 #### Data Visualization
+Plot of juvenile hare weight by sex and site. Using the average weight of sex to explore the relationship. 
 
 ```{r}
 
@@ -126,7 +128,7 @@ Then, in 2 - 3 sentences below your visualization(s) describe in text the main t
 #### Exploratory Data Visualization
 Exploratory data visualization of the relationship between male and female juvenile hare weight. Done so with a QQ plot and histogram to explore assumptions of your t-test.
 
-```{r}
+```{r, include = FALSE}
 weight_compare_explore <- juvenile_snowshoe %>% 
   filter(sex != "NA") %>% 
   group_by(sex) %>% 
@@ -174,7 +176,7 @@ weight_compare %>%
 ```
 
 #### T-Test and Cohen's d
-Create code to run a t-test and cohen's d.
+Run a t-test and cohen's d to explore the relationship between female juvenile hare weight to male juvenile hare weight. 
 
 ```{r}
 female_juvenile <- juvenile_snowshoe %>% 
@@ -205,7 +207,7 @@ Outcome of an unpaired two-sample t-test
 ### Juvenile Weight & Hind Foot Length
 
 #### Wrangle Data
-Wrangle the data to include weight, hind foot length for juvenile hares.
+Wrangle the data to include weight and hind foot length for juvenile hares.
 
 ```{r}
 weight_feet <- juvenile_snowshoe %>% 
@@ -218,6 +220,7 @@ Data visualization of the relationship between wright and hind foot length in ju
 ggplot(data = weight_feet, 
        aes(x = hindft, y = weight)) +
   geom_point() +
+  geom_smooth(method = "lm") +
   labs(title = "Juvenile Hare Weight by Hind Feet Length",
        x = "Hind Foot Length (mm)",
        y = "Weight (g)",
@@ -237,7 +240,7 @@ summary(weight_feet_lm)
 
 #### Data Interpretation
 On average, we expect a 1 mm increase in hind feet length to be associated with a `r weight_feet_lm$estimate[2]` increase in body mass. 
-In 2 - 3 sentences below your figure, describe the outcome of your linear regression exploration (e.g. slope interpretation, R2 value, and Pearson's r correlation) and touch briefly on which assumption(s) of linear regression may be a concern, and additional thoughts you have about how well (or not well…) the linear model describes the relationship. What worries you? ***DELETE THIS***
+In 2 - 3 sentences below your figure, describe the outcome of your linear regression exploration (e.g. slope interpretation, R2 value, and Pearson's r correlation) and touch briefly on which assumption(s) of linear regression may be a concern, and additional thoughts you have about how well (or not well…) the linear model describes the relationship. What worries you? ***DELETE THIS*** DO I NEED PEARSONS R??
 
 ### Summary
 Include a very short summary describing your main findings from your juvenile hares exploration (bullet points are fine) ***DELETE THIS***
