@@ -1,5 +1,5 @@
 ---
-title: "beepboop"
+title: "Juvenile Hare in Bonanza Creek Forest"
 author: "Margaret Hammond"
 date: "11/5/2021"
 output: html_document
@@ -150,14 +150,14 @@ Compare mean weights for juvenile male and female snowshoe hares.
 ```{r}
 
 weight_compare <- juvenile_snowshoe %>% 
-  filter(sex != "NA") %>% 
+  filter(sex != "NA") %>% # Filter out NA for sex
   group_by(sex) %>% 
    mutate(sex = case_when(
-    sex == "f" ~ "Female",
-    sex == "m" ~ "Male")) %>% 
+    sex == "f" ~ "Female", # Change f to Female for cleaner table 
+    sex == "m" ~ "Male")) %>% # Change m to Male for cleaner table
   summarize(
     mean_weight = 
-      round(mean(weight, na.rm = TRUE), 2),
+      round(mean(weight, na.rm = TRUE), 2), # Use round() to show only 2 decimal places
     sd_weight = 
       round(sd(weight, na.rm = TRUE), 2),
     sample_size = n()
@@ -171,7 +171,6 @@ weight_compare %>%
         caption = "Figure 3. Juvenile Hare Weight (g) Comparison by Sex") %>% 
   kable_styling(full_width = TRUE)
 
-##  I STILL NEED TO DO T TEST AND COHENS D
 ```
 
 #### T-Test and Cohen's d
@@ -216,17 +215,28 @@ weight_feet <- juvenile_snowshoe %>%
 #### Data Visualization
 Data visualization of the relationship between wright and hind foot length in juvenile hares.
 ```{r}
-
+ggplot(data = weight_feet, 
+       aes(x = hindft, y = weight)) +
+  geom_point() +
+  labs(title = "Juvenile Hare Weight by Hind Feet Length",
+       x = "Hind Foot Length (mm)",
+       y = "Weight (g)",
+       caption = "Figure 4. Juvenile hare hind feet (mm) by weight (g) in Bonanza Experimental Forest")
 ```
 
 #### Linear Regression
 Linear regression line to visualize how juvenile showshoe hare weight changes with respect to hind foot length.
 
 ```{r}
+weight_feet_lm <- lm(hindft ~ weight, 
+                 data = weight_feet)
+weight_feet_lm
 
+summary(weight_feet_lm)
 ```
 
 #### Data Interpretation
+On average, we expect a 1 mm increase in hind feet length to be associated with a `r weight_feet_lm$estimate[2]` increase in body mass. 
 In 2 - 3 sentences below your figure, describe the outcome of your linear regression exploration (e.g. slope interpretation, R2 value, and Pearson's r correlation) and touch briefly on which assumption(s) of linear regression may be a concern, and additional thoughts you have about how well (or not well…) the linear model describes the relationship. What worries you? ***DELETE THIS***
 
 ### Summary
