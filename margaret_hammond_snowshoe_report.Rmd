@@ -23,6 +23,11 @@ library(effsize)
 A 4 - 5 sentence "mini-introduction" to what this study is exploring, including basic background information about the subject, site and study (with citations as needed), and a brief overview of what is included in the exploratory report. You should probably do this last so you know what’s contained in the report.
 **DELETE**
 
+**WOKRIN ON IT**
+In this document, the `bonanza_hares.csv` data is analyzed to investigate the relationship of hare weight and other variables. The data comes from the Bonanza Creek Experimental Forest and covers three seperate collection sites focused on the different type of vegetation. These are placed into black spruce, mature, or riparian vegetation. In this report, the relationship between snowshoe hare trappings per year, snowshoe hare weight by gender, and snowshoe hare weight by hind feet length relationship are explored. The relationships are analyzed using summary tables, t-test's, Cohen's d, and Pearson's r. All relationship tests contain a segment analyzing their specific findings. Below is the data citation.
+
+Kielland, K., F.S. Chapin, R.W. Ruess, and Bonanza Creek LTER. 2017. Snowshoe hare physical data in Bonanza Creek Experimental Forest: 1999-Present ver 22. Environmental Data Initiative. https://doi.org/10.6073/pasta/03dce4856d79b91557d8e6ce2cbcdc14
+
 ## Data Analysis
 A 3 - 4 sentence section in which you briefly describe the data, including citation & credit as needed, and provide an overview of the main analysis, statistical methods and tools used.
 Kielland, K., F.S. Chapin, R.W. Ruess, and Bonanza Creek LTER. 2017. Snowshoe hare physical data in Bonanza Creek Experimental Forest: 1999-Present ver 22. Environmental Data Initiative. https://doi.org/10.6073/pasta/03dce4856d79b91557d8e6ce2cbcdc14
@@ -51,6 +56,18 @@ juvenile_snowshoe <- snowshoe %>%
 
 juvenile_snowshoe_count <- juvenile_snowshoe %>% 
   count(year)
+
+snowshoe_trap_sum <- juvenile_snowshoe_count %>% 
+  summarize( # Creating a summary table of weight by sex for the seperate sites
+    mean_trap = mean(n),
+    median_trap = median(n), # Median, sd, and n included for personal data observations
+    sd_trap = sd(n), 
+    min_trap = min(n),
+    max_trap = max(n),
+    sample_size = n()
+  )
+
+snowshoe_trap_sum
 ```
 
 #### Data Visualization
@@ -69,12 +86,9 @@ ggplot(data = juvenile_snowshoe_count, aes(x = year, y = n)) +
 ```
 
 #### Data Visualization Observations
-Then, in 3 - 4 sentences below your figure, describe major takeaways from your graph about total snowshoe hare trappings at the site. You might consider:
-- What were the minimum and maximum counts of juvenile hare trappings?
-- Mean or median annual number of juvenile hares trapped?
-General/notable trends?
-- These are absolute counts, but this count is also impacted by effort (e.g. the number of days and number of traps in the study each year). What would you suggest be done moving forward (you are not expected to actually do this) to standardize the juvenile hare population in future analyses?
-**DELETE THIS**
+The data above shows the aount of juvenile snowshoe hare trappings per year in the Bonanza Creek Experimental Forest. The maximum amount trapped occurred in the year 1999, with `r snowshoe_trap_sum$max_trap`. Of all the years that recorded trappings, the minimum amount trapped occurred in the year 2010 with `r show_shoe_trap_sum$min_trap`. The mean amount of traps from 199-2012 were `r show_shoe_trap_sum$mean_trap`, and the median amount was `r show_shoe_trap_sum$median_trap`. As shown in `Figure 1` above, the notable trend of juvenile hare trap count is decreasing from 1999 to 2012. It is important to note that count is impacted by effort, and that earlier years could have had more amount of traps in the forest compared to later years. Moving forward, I suggest they standardized their trapping protocols to ensure the same amount of days spent trapping, and the same amount of traps. 
+
+
 
 ### Juvenile Hare Weight by Sex and Site
 
@@ -92,12 +106,11 @@ weight_stats <- juvenile_snowshoe %>%
     grid == "bonrip" ~ "Bonanza Riparian",
     grid == "bonmat" ~ "Bonanza Mature",
     grid == "bonbs" ~ "Bonanza Black Spruce"
-  )) %>% 
-  filter(sex != "NA") 
+  )) 
 
 weight_stats_sum <- weight_stats %>% 
   group_by(sex, grid) %>% 
-  summarize( # Creating a summary table of weight by sex for the seperate sites
+  summarize( # Creating a summary table of weight by sex for the separate sites
     mean_weight = mean(weight, na.rm = TRUE),
     median_weight = median(weight, na.rm = TRUE), # Median, sd, and n included for personal data observations
     sd_weight = sd(weight, na.rm = TRUE), 
@@ -105,23 +118,23 @@ weight_stats_sum <- weight_stats %>%
   )
 
 
-ggplot(data = weight_stats_sum, 
-       aes(x = sex, y = mean_weight, fill = sex)) +
-  geom_bar(stat = "identity") +
+ggplot(data = weight_stats, 
+       aes(x = sex, y = weight, fill = sex)) +
+  geom_boxplot() +
   facet_wrap(~ grid, scale = "free") +
-  scale_fill_manual(values = c("pink3", "blue", "grey")) + #pink for female, blue for male
+  scale_fill_manual(values = c("pink3", "blue", "grey")) + # pink for female, blue for male
  # theme()
   labs (x = "Sex",
         y = "Weight (gram)",
-        title = "Average Weight of Juvenile Hare by Sex at each Site",
-        caption = "Figure 2. Average weight (gram) of juvenile hare by 
+        title = "Weight (g) Juvenile Hare by Sex at each Site",
+        caption = "Figure 2. Weight (g) of juvenile hare by 
         sex at the Bonanza Creek Experimental Forest from 1999-present",
         fill = "Sex")
   
 ```
 
 #### Data Visualization Observations
-Then, in 2 - 3 sentences below your visualization(s) describe in text the main takeaways that you would want the audience to understand from your figures. ***DELETE THIS***
+`Figure 2` above shows the difference of weight between male, female, and `NA` sexes at the three Bonanza Creek collection sites; Black Spruce, Mature, and Riparian.  `NA` values are included for sex to allow for all data to be shown in the box plot. From `Figure 2`, we can see that the average male hare is heavier than the average female hare. This being said, different sites show large differences between average male and female hare weight, ~400 g. The Bonanza Mature site showed the largest difference between mean weight, whereas the Black Spruce site showed a smaller difference within ~200 g. 
 
 ### Juvenile Weight Comparison
 
