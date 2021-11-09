@@ -233,13 +233,16 @@ Linear regression line to visualize how juvenile showshoe hare weight changes wi
 ```{r}
 weight_feet_lm <- lm(hindft ~ weight, 
                  data = weight_feet)
-weight_feet_lm
+weight_feet_lm_tidy <- tidy(weight_feet_lm) # get lm stats
+weight_feet_lm_glance <- glance(weight_feet_lm)
 
-summary(weight_feet_lm)
+weight_feet_lm_tidy
+weight_feet_lm_glance
+cor.test(weight_feet$hindft, weight_feet$weight)
 ```
 
 #### Data Interpretation
-On average, we expect a 1 mm increase in hind feet length to be associated with a `r weight_feet_lm$estimate[2]` increase in body mass. 
+On average, we expect a 1 mm increase in hind feet length to be associated with a `r round(weight_feet_lm_tidy$estimate[2], 2)` increase in body mass. 
 In 2 - 3 sentences below your figure, describe the outcome of your linear regression exploration (e.g. slope interpretation, R2 value, and Pearson's r correlation) and touch briefly on which assumption(s) of linear regression may be a concern, and additional thoughts you have about how well (or not well…) the linear model describes the relationship. What worries you? ***DELETE THIS*** DO I NEED PEARSONS R??
 
 ### Summary

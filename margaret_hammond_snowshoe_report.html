@@ -436,38 +436,37 @@ t.test(x = female_juvenile, y = male_juvenile)</code></pre>
 <p>Linear regression line to visualize how juvenile showshoe hare weight changes with respect to hind foot length.</p>
 <pre class="r"><code>weight_feet_lm &lt;- lm(hindft ~ weight, 
                  data = weight_feet)
-weight_feet_lm</code></pre>
+weight_feet_lm_tidy &lt;- tidy(weight_feet_lm) # get lm stats
+weight_feet_lm_glance &lt;- glance(weight_feet_lm)
+
+weight_feet_lm_tidy</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)  95.1      2.89         32.8 4.07e-92
+## 2 weight        0.0314   0.00306      10.3 8.46e-21</code></pre>
+<pre class="r"><code>weight_feet_lm_glance</code></pre>
+<pre><code>## # A tibble: 1 x 12
+##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.299         0.296  15.1      105. 8.46e-21     1 -1029. 2064. 2075.
+## # ... with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+<pre class="r"><code>cor.test(weight_feet$hindft, weight_feet$weight)</code></pre>
 <pre><code>## 
-## Call:
-## lm(formula = hindft ~ weight, data = weight_feet)
+##  Pearson&#39;s product-moment correlation
 ## 
-## Coefficients:
-## (Intercept)       weight  
-##    95.07404      0.03137</code></pre>
-<pre class="r"><code>summary(weight_feet_lm)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = hindft ~ weight, data = weight_feet)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -41.035 -11.054  -1.564  10.671  36.808 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 95.074042   2.894226   32.85   &lt;2e-16 ***
-## weight       0.031372   0.003058   10.26   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 15.15 on 247 degrees of freedom
-##   (129 observations deleted due to missingness)
-## Multiple R-squared:  0.2988, Adjusted R-squared:  0.2959 
-## F-statistic: 105.2 on 1 and 247 DF,  p-value: &lt; 2.2e-16</code></pre>
+## data:  weight_feet$hindft and weight_feet$weight
+## t = 10.259, df = 247, p-value &lt; 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.4530683 0.6282259
+## sample estimates:
+##       cor 
+## 0.5465982</code></pre>
 </div>
 <div id="data-interpretation" class="section level4">
 <h4>Data Interpretation</h4>
-<p>On average, we expect a 1 mm increase in hind feet length to be associated with a increase in body mass. In 2 - 3 sentences below your figure, describe the outcome of your linear regression exploration (e.g. slope interpretation, R2 value, and Pearson’s r correlation) and touch briefly on which assumption(s) of linear regression may be a concern, and additional thoughts you have about how well (or not well…) the linear model describes the relationship. What worries you? <strong><em>DELETE THIS</em></strong> DO I NEED PEARSONS R??</p>
+<p>On average, we expect a 1 mm increase in hind feet length to be associated with a 0.03 increase in body mass. In 2 - 3 sentences below your figure, describe the outcome of your linear regression exploration (e.g. slope interpretation, R2 value, and Pearson’s r correlation) and touch briefly on which assumption(s) of linear regression may be a concern, and additional thoughts you have about how well (or not well…) the linear model describes the relationship. What worries you? <strong><em>DELETE THIS</em></strong> DO I NEED PEARSONS R??</p>
 </div>
 </div>
 <div id="summary" class="section level3">
