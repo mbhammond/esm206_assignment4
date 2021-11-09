@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include = TRUE, message = FALSE, warning = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 library(tidyverse)
 library(here)
@@ -86,7 +86,7 @@ ggplot(data = juvenile_snowshoe_count, aes(x = year, y = n)) +
 ```
 
 #### Data Visualization Observations
-The data above shows the aount of juvenile snowshoe hare trappings per year in the Bonanza Creek Experimental Forest. The maximum amount trapped occurred in the year 1999, with `r snowshoe_trap_sum$max_trap`. Of all the years that recorded trappings, the minimum amount trapped occurred in the year 2010 with `r show_shoe_trap_sum$min_trap`. The mean amount of traps from 199-2012 were `r show_shoe_trap_sum$mean_trap`, and the median amount was `r show_shoe_trap_sum$median_trap`. As shown in `Figure 1` above, the notable trend of juvenile hare trap count is decreasing from 1999 to 2012. It is important to note that count is impacted by effort, and that earlier years could have had more amount of traps in the forest compared to later years. Moving forward, I suggest they standardized their trapping protocols to ensure the same amount of days spent trapping, and the same amount of traps. 
+The data above shows the aount of juvenile snowshoe hare trappings per year in the Bonanza Creek Experimental Forest. The maximum amount trapped occurred in the year 1999, with `r snowshoe_trap_sum$max_trap[1]`. Of all the years that recorded trappings, the minimum amount trapped occurred in the year 2010 with `r snowshoe_trap_sum$min_trap[1]`. The mean amount of traps from 199-2012 were `r snowshoe_trap_sum$mean_trap[1]`, and the median amount was `r snowshoe_trap_sum$median_trap[1]`. As shown in `Figure 1` above, the notable trend of juvenile hare trap count is decreasing from 1999 to 2012. It is important to note that count is impacted by effort, and that earlier years could have had more amount of traps in the forest compared to later years. Moving forward, I suggest they standardized their trapping protocols to ensure the same amount of days spent trapping, and the same amount of traps. 
 
 
 
